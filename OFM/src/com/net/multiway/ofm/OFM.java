@@ -10,16 +10,20 @@ import com.net.multiway.ofm.daos.DataEventDAO;
 import com.net.multiway.ofm.daos.DataGraphicDAO;
 import com.net.multiway.ofm.daos.DeviceDAO;
 import com.net.multiway.ofm.daos.LimitDAO;
+import com.net.multiway.ofm.daos.OccurrenceDAO;
 import com.net.multiway.ofm.daos.ParameterDAO;
 import com.net.multiway.ofm.daos.UserDAO;
 import com.net.multiway.ofm.daos.exceptions.IllegalOrphanException;
 import com.net.multiway.ofm.entities.Data;
 import com.net.multiway.ofm.entities.DataEvent;
+import com.net.multiway.ofm.entities.DataGraphic;
 import com.net.multiway.ofm.entities.Device;
 import com.net.multiway.ofm.entities.Limit;
+import com.net.multiway.ofm.entities.Occurrence;
 import com.net.multiway.ofm.entities.Parameter;
 import com.net.multiway.ofm.entities.User;
 import java.util.Date;
+import java.util.List;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javax.persistence.EntityManagerFactory;
@@ -38,6 +42,14 @@ public class OFM extends Application {
         emf = Persistence.createEntityManagerFactory("OFMPU");
 
         UserDAO userDao = new UserDAO(emf);
+        DeviceDAO deviceDao = new DeviceDAO(emf);
+        ParameterDAO parameterDao = new ParameterDAO(emf);
+        LimitDAO limitDao = new LimitDAO(emf);
+        DataDAO dataDao = new DataDAO(emf);
+        DataGraphicDAO dataGraphicDao = new DataGraphicDAO(emf);
+        DataEventDAO dataEventDao = new DataEventDAO(emf);
+        OccurrenceDAO occurrenceDao = new OccurrenceDAO(emf);
+        
         User user = userDao.findUser(1);
         if (user == null) {
             user = new User();
@@ -48,14 +60,6 @@ public class OFM extends Application {
             userDao.create(user);
         }
         System.out.println(user.getEmail());
-
-        DeviceDAO deviceDao = new DeviceDAO(emf);
-        ParameterDAO parameterDao = new ParameterDAO(emf);
-        LimitDAO limitDao = new LimitDAO(emf);
-        DataDAO dataDao = new DataDAO(emf);
-        DataGraphicDAO dataGraphicDao = new DataGraphicDAO(emf);
-        DataEventDAO dataEventDao = new DataEventDAO(emf);
-        
 
         Device device = deviceDao.findDevice(1);
         if (device == null) {
@@ -85,17 +89,28 @@ public class OFM extends Application {
             dataDao.create(data);
             device.setData(data); //enlace bidirecional
             
-//            DataGraphic dg;
-//            for(int i = 0; i < 15000; i++) {
-//                dg = new DataGraphic(data, i);
-//                dataGraphicDao.create(dg);
-//                data.getDataGraphicList().add(dg); //enlace bidirecional
-//            }
+            for(int i = 0; i < 15000; i++) {
+                DataGraphic dataGraphic = new DataGraphic(data, i); //enlace bidirecional
+                dataGraphicDao.create(dataGraphic);
+                data.getDataGraphicList().add(dataGraphic); //enlace bidirecional
+            }
             
-            DataEvent dataEvent = new DataEvent(0, 0, 0, 0, 0, 0);
-            dataEvent.setData(data);
-            dataEventDao.create(dataEvent);
-            data.getDataEventList().add(dataEvent);
+            for(int i = 0; i < 5; i++) {
+                DataEvent dataEvent = new DataEvent(0, 0, 0, 0, 0, 0);
+                dataEvent.setData(data); //enlace bidirecional
+                dataEventDao.create(dataEvent);
+                data.getDataEventList().add(dataEvent); //enlace bidirecional
+            }
+            
+            Occurrence occurrence = new Occurrence("Red", "Fibra Quebrada", new Date());
+            occurrence.setDevice(device); //enlace bidirecional
+            occurrenceDao.create(occurrence);
+            device.getOccurrenceList().add(occurrence); //enlace bidirecional
+            
+            occurrence = new Occurrence("Yellow", "Delay", new Date());
+            occurrence.setDevice(device); //enlace bidirecional
+            occurrenceDao.create(occurrence);
+            device.getOccurrenceList().add(occurrence); //enlace bidirecional
         }
         else {
             System.out.println(device.toString());
@@ -103,6 +118,25 @@ public class OFM extends Application {
             System.out.println(device.getLimit().toString());
             System.out.println(device.getData().toString());
             
+            Data data = device.getData();
+            
+//            List<DataEvent> dataEvents = data.getDataEventList();
+//            for(DataEvent dataEvent : dataEvents) {
+//                System.out.println(dataEvent.toString());
+//            }
+            
+            System.out.println("Excluindo pontos...");
+            List<DataGraphic> dataGraphics = data.getDataGraphicList();
+            for(DataGraphic dataGraphic : dataGraphics) {
+                dataGraphicDao.destroy(dataGraphic.getDataGraphicId());
+            }
+            
+            System.out.println("Criando pontos...");
+            for(int i = 0; i < 15000; i++) {
+                DataGraphic dataGraphic = new DataGraphic(data, i); //enlace bidirecional
+                dataGraphicDao.create(dataGraphic);
+                data.getDataGraphicList().add(dataGraphic); //enlace bidirecional
+            }
         }
     }
 

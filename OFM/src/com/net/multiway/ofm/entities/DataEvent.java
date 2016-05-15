@@ -24,7 +24,7 @@ import javax.persistence.Table;
  * @author joshua
  */
 @Entity
-@Table(name = "data_event", catalog = "ofm", schema = "")
+@Table(name = "data_event", catalog = "ofm", schema = "ofm")
 @NamedQueries({
     @NamedQuery(name = "DataEvent.findAll", query = "SELECT d FROM DataEvent d"),
     @NamedQuery(name = "DataEvent.findByDataEventId", query = "SELECT d FROM DataEvent d WHERE d.dataEventId = :dataEventId"),
@@ -37,32 +37,40 @@ import javax.persistence.Table;
 public class DataEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "data_event_id", nullable = false)
     private Integer dataEventId;
+    
+    @JoinColumn(name = "data_id", referencedColumnName = "data_id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Data data;    
+    
     @Basic(optional = false)
     @Column(nullable = false)
     private float distance;
+    
     @Basic(optional = false)
     @Column(nullable = false)
     private int type;
+    
     @Basic(optional = false)
     @Column(name = "echo_loss", nullable = false)
     private float echoLoss;
+    
     @Basic(optional = false)
     @Column(name = "insertion_loss", nullable = false)
     private float insertionLoss;
+    
     @Basic(optional = false)
     @Column(name = "average_attenuation_coefficient", nullable = false)
     private float averageAttenuationCoefficient;
+    
     @Basic(optional = false)
     @Column(name = "acumulative_loss", nullable = false)
     private float acumulativeLoss;
-    @JoinColumn(name = "data_id", referencedColumnName = "data_id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Data data;
 
     public DataEvent() {
     }

@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +28,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "", uniqueConstraints = {
+@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"device_id"})})
 @NamedQueries({
     @NamedQuery(name = "Limit.findAll", query = "SELECT l FROM Limit l"),
@@ -92,10 +91,10 @@ public class Limit implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
     @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false)
     private Device device;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private User user;
 
     public Limit() {

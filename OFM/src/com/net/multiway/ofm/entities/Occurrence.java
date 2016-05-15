@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +26,7 @@ import javax.persistence.TemporalType;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "")
+@Table(catalog = "ofm", schema = "ofm")
 @NamedQueries({
     @NamedQuery(name = "Occurrence.findAll", query = "SELECT o FROM Occurrence o"),
     @NamedQuery(name = "Occurrence.findByOccurrenceId", query = "SELECT o FROM Occurrence o WHERE o.occurrenceId = :occurrenceId"),
@@ -53,18 +52,13 @@ public class Occurrence implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Device device;
 
     public Occurrence() {
     }
 
-    public Occurrence(Integer occurrenceId) {
-        this.occurrenceId = occurrenceId;
-    }
-
-    public Occurrence(Integer occurrenceId, String type, String description, Date createTime) {
-        this.occurrenceId = occurrenceId;
+    public Occurrence(String type, String description, Date createTime) {
         this.type = type;
         this.description = description;
         this.createTime = createTime;

@@ -12,7 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +28,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "", uniqueConstraints = {
+@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"email"}),
     @UniqueConstraint(columnNames = {"username"})})
 @NamedQueries({
@@ -64,22 +63,17 @@ public class User implements Serializable {
     @Column(name = "update_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Parameter> parameterList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Limit> limitList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Device> deviceList;
 
     public User() {
     }
 
-    public User(Integer userId) {
-        this.userId = userId;
-    }
-
-    public User(Integer userId, String username, String email, String password, Date createTime) {
-        this.userId = userId;
+    public User(String username, String email, String password, Date createTime) {
         this.username = username;
         this.email = email;
         this.password = password;

@@ -24,36 +24,35 @@ import javax.persistence.Table;
  * @author joshua
  */
 @Entity
-@Table(name = "data_graphic", catalog = "ofm", schema = "")
+@Table(name = "data_graphic", catalog = "ofm", schema = "ofm")
 @NamedQueries({
     @NamedQuery(name = "DataGraphic.findAll", query = "SELECT d FROM DataGraphic d"),
     @NamedQuery(name = "DataGraphic.findByDataGraphicId", query = "SELECT d FROM DataGraphic d WHERE d.dataGraphicId = :dataGraphicId"),
-    @NamedQuery(name = "DataGraphic.findByValue", query = "SELECT d FROM DataGraphic d WHERE d.value = :value")})
+    @NamedQuery(name = "DataGraphic.findByValue", query = "SELECT d FROM DataGraphic d WHERE d.point = :point")})
 public class DataGraphic implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "data_graphic_id", nullable = false)
     private Long dataGraphicId;
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private int value;
+    
     @JoinColumn(name = "data_id", referencedColumnName = "data_id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Data data;
+    
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private int point;
 
     public DataGraphic() {
     }
 
-    public DataGraphic(Long dataGraphicId) {
-        this.dataGraphicId = dataGraphicId;
-    }
-
-    public DataGraphic(Long dataGraphicId, int value) {
-        this.dataGraphicId = dataGraphicId;
-        this.value = value;
+    public DataGraphic(Data data, int value) {
+        this.data = data;
+        this.point = value;
     }
 
     public Long getDataGraphicId() {
@@ -64,12 +63,12 @@ public class DataGraphic implements Serializable {
         this.dataGraphicId = dataGraphicId;
     }
 
-    public int getValue() {
-        return value;
+    public int getPoint() {
+        return point;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setPoint(int point) {
+        this.point = point;
     }
 
     public Data getData() {

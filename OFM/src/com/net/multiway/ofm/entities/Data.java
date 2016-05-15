@@ -6,6 +6,7 @@
 package com.net.multiway.ofm.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -28,7 +29,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "", uniqueConstraints = {
+@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"device_id"})})
 @NamedQueries({
     @NamedQuery(name = "Data.findAll", query = "SELECT d FROM Data d"),
@@ -54,6 +55,11 @@ public class Data implements Serializable {
     @Basic(optional = false)
     @Column(name = "data_id", nullable = false)
     private Integer dataId;
+    
+    @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    private Device device;
+    
     @Basic(optional = false)
     @Column(name = "sample_frequency", nullable = false)
     private int sampleFrequency;
@@ -93,13 +99,12 @@ public class Data implements Serializable {
     @Basic(optional = false)
     @Column(name = "test_way", nullable = false)
     private int testWay;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "data", fetch = FetchType.LAZY)
+    private List<DataEvent> dataEventList = new ArrayList<>();
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "data", fetch = FetchType.EAGER)
-    private List<DataEvent> dataEventList;
-    @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    private Device device;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "data", fetch = FetchType.EAGER)
-    private List<DataGraphic> dataGraphicList;
+    private List<DataGraphic> dataGraphicList = new ArrayList<>();
 
     public Data() {
     }

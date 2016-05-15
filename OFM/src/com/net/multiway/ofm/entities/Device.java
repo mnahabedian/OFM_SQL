@@ -12,7 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +31,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "", uniqueConstraints = {
+@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"name"})})
 @NamedQueries({
     @NamedQuery(name = "Device.findAll", query = "SELECT d FROM Device d"),
@@ -70,16 +69,16 @@ public class Device implements Serializable {
     @Column(name = "update_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "device", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "device")
     private Data data;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "device", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "device")
     private Parameter parameter;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "device", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "device")
     private Limit limit;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
     private List<Occurrence> occurrenceList;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private User user;
 
     public Device() {
