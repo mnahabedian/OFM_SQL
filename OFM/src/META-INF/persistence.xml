@@ -11,10 +11,10 @@
     <class>ofm.model.entities.Device</class>
     <class>ofm.model.entities.Parameter</class>
     <properties>
-        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ofm?zeroDateTimeBehavior=convertToNull"/>
-        <property name="javax.persistence.jdbc.user" value="root"/>
-        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-        <property name="javax.persistence.jdbc.password" value="j0sh42"/>     
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ofm?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="j0sh42"/>
     </properties>
   </persistence-unit>
 </persistence>
