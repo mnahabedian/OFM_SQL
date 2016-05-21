@@ -68,7 +68,7 @@ public class Ofm extends Application {
             user.setCreateTime(new Date());
             userDao.create(user);
         }
-        System.out.println(user.getEmail());
+        System.out.println(user.toString());
 
         Device device = deviceDao.findDevice(1);
         if (device == null) {
@@ -101,7 +101,7 @@ public class Ofm extends Application {
             dataDao.create(data);
             device.setData(data); //enlace bidirecional
             
-            for(int i = 0; i < 1000; i++) {
+            for(int i = 0; i < 100; i++) {
                 DataGraphic dataGraphic = new DataGraphic(data, i); //enlace bidirecional
                 dataGraphicDao.create(dataGraphic);
                 data.getDataGraphicList().add(dataGraphic); //enlace bidirecional
@@ -143,10 +143,15 @@ public class Ofm extends Application {
             }
             
             System.out.println("Incluindo pontos...");
-            for(int i = 0; i < 500; i++) {
+            for(int i = 0; i < 50; i++) {
                 DataGraphic dataGraphic = new DataGraphic(device.getData(), i); //enlace bidirecional
                 dataGraphicDao.create(dataGraphic);
                 device.getData().getDataGraphicList().add(dataGraphic); //enlace bidirecional
+            }
+            
+            List<Device> devices = user.getDeviceList();
+            for(Device d : devices) {
+                System.out.println(d.toString());
             }
         }
         

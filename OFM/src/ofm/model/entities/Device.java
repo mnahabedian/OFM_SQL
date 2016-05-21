@@ -486,7 +486,7 @@ public class Device implements Externalizable {
 
     @Override
     public String toString() {
-        return "ofm.model.entities.Device[ deviceId=" + _deviceId + " name=" + _name + " ]";
+        return "ofm.model.entities.Device[ deviceId=" + _deviceId + "; name=" + _name + " ]";
     }
 
     @Override
