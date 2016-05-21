@@ -44,7 +44,7 @@ public class Occurrence implements Serializable {
     private Integer occurrenceId;
     
     @Basic(optional = false)
-    @Column(name = "type", nullable = false, length = 6)
+    @Column(name = "type", nullable = false) // ('Green', 'Yellow', 'Red')
     private String type;
     
     @Basic(optional = false)

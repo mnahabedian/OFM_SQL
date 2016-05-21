@@ -8,6 +8,8 @@ package ofm.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,6 +33,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
+@Access(AccessType.PROPERTY)
 @Table(schema = "ofm", name = "device", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"name"})})
 @NamedQueries({
@@ -77,6 +80,10 @@ public class Device implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
     
+    @Basic(optional = false)
+    @Column(name = "status", nullable = false) // ('Active', 'Inactive')
+    private String status;    
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "device")
     private Data data;
     
@@ -100,21 +107,24 @@ public class Device implements Serializable {
         this.deviceId = deviceId;
     }
 
-    public Device(Integer deviceId, String name, String ip, String mask, String gateway, Date createTime) {
+    public Device(Integer deviceId, String name, String ip, String mask, String gateway, Date createTime, Date updateTime, String status) {
         this.deviceId = deviceId;
         this.name = name;
         this.ip = ip;
         this.mask = mask;
         this.gateway = gateway;
         this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.status = status;
     }
 
-    public Device(String name, String ip, String mask, String gateway, Date createTime) {
+    public Device(String name, String ip, String mask, String gateway, Date createTime, String status) {
         this.name = name;
         this.ip = ip;
         this.mask = mask;
         this.gateway = gateway;
         this.createTime = createTime;
+        this.status = status;
     }
 
     public Integer getDeviceId() {
@@ -171,6 +181,14 @@ public class Device implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Data getData() {

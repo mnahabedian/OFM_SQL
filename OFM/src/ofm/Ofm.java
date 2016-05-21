@@ -80,6 +80,7 @@ public class Ofm extends Application {
             device.setGateway("2");
             device.setUser(user);
             device.setCreateTime(new Date());
+            device.setStatus("Active");
             deviceDao.create(device);
 
             Parameter parameter = new Parameter(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Date());
@@ -99,7 +100,7 @@ public class Ofm extends Application {
             dataDao.create(data);
             device.setData(data); //enlace bidirecional
             
-            for(int i = 0; i < 100; i++) {
+            for(int i = 0; i < 1000; i++) {
                 DataGraphic dataGraphic = new DataGraphic(data, i); //enlace bidirecional
                 dataGraphicDao.create(dataGraphic);
                 data.getDataGraphicList().add(dataGraphic); //enlace bidirecional
@@ -141,14 +142,14 @@ public class Ofm extends Application {
             }
             
             System.out.println("Incluindo pontos...");
-            for(int i = 0; i < 100; i++) {
+            for(int i = 0; i < 500; i++) {
                 DataGraphic dataGraphic = new DataGraphic(device.getData(), i); //enlace bidirecional
                 dataGraphicDao.create(dataGraphic);
                 device.getData().getDataGraphicList().add(dataGraphic); //enlace bidirecional
             }
-            
-            
         }
+        
+        System.out.println("fim...");
     }
 
     /**
