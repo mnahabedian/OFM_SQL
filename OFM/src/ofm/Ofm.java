@@ -3,44 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm;
+package ofm;
 
-import com.net.multiway.ofm.daos.DataDAO;
-import com.net.multiway.ofm.daos.DataEventDAO;
-import com.net.multiway.ofm.daos.DataGraphicDAO;
-import com.net.multiway.ofm.daos.DeviceDAO;
-import com.net.multiway.ofm.daos.LimitDAO;
-import com.net.multiway.ofm.daos.OccurrenceDAO;
-import com.net.multiway.ofm.daos.ParameterDAO;
-import com.net.multiway.ofm.daos.UserDAO;
-import com.net.multiway.ofm.daos.exceptions.IllegalOrphanException;
-import com.net.multiway.ofm.entities.Data;
-import com.net.multiway.ofm.entities.DataEvent;
-import com.net.multiway.ofm.entities.DataGraphic;
-import com.net.multiway.ofm.entities.Device;
-import com.net.multiway.ofm.entities.Limit;
-import com.net.multiway.ofm.entities.Occurrence;
-import com.net.multiway.ofm.entities.Parameter;
-import com.net.multiway.ofm.entities.User;
 import java.util.Date;
 import java.util.List;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import ofm.model.daos.DataDAO;
+import ofm.model.daos.DataEventDAO;
+import ofm.model.daos.DataGraphicDAO;
+import ofm.model.daos.DeviceDAO;
+import ofm.model.daos.LimitDAO;
+import ofm.model.daos.OccurrenceDAO;
+import ofm.model.daos.ParameterDAO;
+import ofm.model.daos.UserDAO;
+import ofm.model.daos.exceptions.IllegalOrphanException;
+import ofm.model.daos.exceptions.NonexistentEntityException;
+import ofm.model.entities.Data;
+import ofm.model.entities.DataEvent;
+import ofm.model.entities.DataGraphic;
+import ofm.model.entities.Device;
+import ofm.model.entities.Limit;
+import ofm.model.entities.Occurrence;
+import ofm.model.entities.Parameter;
+import ofm.model.entities.User;
 
 /**
  *
- * @author phelipe
+ * @author joshua
  */
-public class OFM extends Application {
-
+public class Ofm extends Application {
+    
     private EntityManagerFactory emf;
-
+    
     @Override
-    public void start(Stage primaryStage) throws IllegalOrphanException, Exception {
-        emf = Persistence.createEntityManagerFactory("OFMPU");
-
+    public void start(Stage primaryStage) throws IllegalOrphanException, NonexistentEntityException, Exception {
+        emf = Persistence.createEntityManagerFactory("ofmPU");
+        
         UserDAO userDao = new UserDAO(emf);
         DeviceDAO deviceDao = new DeviceDAO(emf);
         ParameterDAO parameterDao = new ParameterDAO(emf);
@@ -52,6 +58,8 @@ public class OFM extends Application {
         
         User user = userDao.findUser(1);
         if (user == null) {
+            System.out.println("Incluindo Usuário...");
+            
             user = new User();
             user.setUsername("admin");
             user.setEmail("teste@vai.dar.certo");
@@ -63,6 +71,8 @@ public class OFM extends Application {
 
         Device device = deviceDao.findDevice(1);
         if (device == null) {
+            System.out.println("Incluindo Device...");
+
             device = new Device();
             device.setName("DEVICE_1");
             device.setIp("123");
@@ -89,7 +99,7 @@ public class OFM extends Application {
             dataDao.create(data);
             device.setData(data); //enlace bidirecional
             
-            for(int i = 0; i < 15000; i++) {
+            for(int i = 0; i < 100; i++) {
                 DataGraphic dataGraphic = new DataGraphic(data, i); //enlace bidirecional
                 dataGraphicDao.create(dataGraphic);
                 data.getDataGraphicList().add(dataGraphic); //enlace bidirecional
@@ -118,25 +128,26 @@ public class OFM extends Application {
             System.out.println(device.getLimit().toString());
             System.out.println(device.getData().toString());
             
-            Data data = device.getData();
-            
-//            List<DataEvent> dataEvents = data.getDataEventList();
-//            for(DataEvent dataEvent : dataEvents) {
-//                System.out.println(dataEvent.toString());
-//            }
+            List<Occurrence> occurrences = device.getOccurrenceList();
+            for(Occurrence occurrence : occurrences) {
+                occurrence.setDescription("Alteradas");
+                occurrenceDao.edit(occurrence);
+            }
             
             System.out.println("Excluindo pontos...");
-            List<DataGraphic> dataGraphics = data.getDataGraphicList();
+            List<DataGraphic> dataGraphics = device.getData().getDataGraphicList();
             for(DataGraphic dataGraphic : dataGraphics) {
                 dataGraphicDao.destroy(dataGraphic.getDataGraphicId());
             }
             
-            System.out.println("Criando pontos...");
-            for(int i = 0; i < 15000; i++) {
-                DataGraphic dataGraphic = new DataGraphic(data, i); //enlace bidirecional
+            System.out.println("Incluindo pontos...");
+            for(int i = 0; i < 100; i++) {
+                DataGraphic dataGraphic = new DataGraphic(device.getData(), i); //enlace bidirecional
                 dataGraphicDao.create(dataGraphic);
-                data.getDataGraphicList().add(dataGraphic); //enlace bidirecional
+                device.getData().getDataGraphicList().add(dataGraphic); //enlace bidirecional
             }
+            
+            
         }
     }
 
@@ -146,5 +157,5 @@ public class OFM extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    
 }

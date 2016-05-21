@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,7 +31,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
+@Table(schema = "ofm", name = "device", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"name"})})
 @NamedQueries({
     @NamedQuery(name = "Device.findAll", query = "SELECT d FROM Device d"),
@@ -45,43 +45,68 @@ import javax.persistence.UniqueConstraint;
 public class Device implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "device_id", nullable = false)
     private Integer deviceId;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 63)
+    @Column(name = "name", nullable = false, length = 63)
     private String name;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 32)
+    @Column(name = "ip", nullable = false, length = 32)
     private String ip;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 32)
+    @Column(name = "mask", nullable = false, length = 32)
     private String mask;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 32)
+    @Column(name = "gateway", nullable = false, length = 32)
     private String gateway;
+    
     @Basic(optional = false)
     @Column(name = "create_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+    
     @Column(name = "update_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "device")
     private Data data;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "device")
     private Parameter parameter;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "device")
     private Limit limit;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
     private List<Occurrence> occurrenceList;
+    
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     @ManyToOne(optional = false)
     private User user;
 
     public Device() {
+    }
+
+    public Device(Integer deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public Device(Integer deviceId, String name, String ip, String mask, String gateway, Date createTime) {
+        this.deviceId = deviceId;
+        this.name = name;
+        this.ip = ip;
+        this.mask = mask;
+        this.gateway = gateway;
+        this.createTime = createTime;
     }
 
     public Device(String name, String ip, String mask, String gateway, Date createTime) {
@@ -210,7 +235,7 @@ public class Device implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.Device[ deviceId=" + deviceId + " ]";
+        return "ofm.model.entities.Device[ deviceId=" + deviceId + " ]";
     }
     
 }

@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +23,7 @@ import javax.persistence.Table;
  * @author joshua
  */
 @Entity
-@Table(name = "data_event", catalog = "ofm", schema = "ofm")
+@Table(schema = "ofm", name = "data_event")
 @NamedQueries({
     @NamedQuery(name = "DataEvent.findAll", query = "SELECT d FROM DataEvent d"),
     @NamedQuery(name = "DataEvent.findByDataEventId", query = "SELECT d FROM DataEvent d WHERE d.dataEventId = :dataEventId"),
@@ -44,16 +43,12 @@ public class DataEvent implements Serializable {
     @Column(name = "data_event_id", nullable = false)
     private Integer dataEventId;
     
-    @JoinColumn(name = "data_id", referencedColumnName = "data_id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Data data;    
-    
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "distance", nullable = false)
     private float distance;
     
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "type", nullable = false)
     private int type;
     
     @Basic(optional = false)
@@ -71,8 +66,26 @@ public class DataEvent implements Serializable {
     @Basic(optional = false)
     @Column(name = "acumulative_loss", nullable = false)
     private float acumulativeLoss;
+    
+    @JoinColumn(name = "data_id", referencedColumnName = "data_id", nullable = false)
+    @ManyToOne(optional = false)
+    private Data data;
 
     public DataEvent() {
+    }
+
+    public DataEvent(Integer dataEventId) {
+        this.dataEventId = dataEventId;
+    }
+
+    public DataEvent(Integer dataEventId, float distance, int type, float echoLoss, float insertionLoss, float averageAttenuationCoefficient, float acumulativeLoss) {
+        this.dataEventId = dataEventId;
+        this.distance = distance;
+        this.type = type;
+        this.echoLoss = echoLoss;
+        this.insertionLoss = insertionLoss;
+        this.averageAttenuationCoefficient = averageAttenuationCoefficient;
+        this.acumulativeLoss = acumulativeLoss;
     }
 
     public DataEvent(float distance, int type, float echoLoss, float insertionLoss, float averageAttenuationCoefficient, float acumulativeLoss) {
@@ -170,7 +183,7 @@ public class DataEvent implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.DataEvent[ dataEventId=" + dataEventId + " ]";
+        return "ofm.model.entities.DataEvent[ dataEventId=" + dataEventId + " ]";
     }
     
 }

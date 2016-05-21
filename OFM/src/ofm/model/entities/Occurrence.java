@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "ofm")
+@Table(schema = "ofm", name = "occurrence")
 @NamedQueries({
     @NamedQuery(name = "Occurrence.findAll", query = "SELECT o FROM Occurrence o"),
     @NamedQuery(name = "Occurrence.findByOccurrenceId", query = "SELECT o FROM Occurrence o WHERE o.occurrenceId = :occurrenceId"),
@@ -36,26 +36,42 @@ import javax.persistence.TemporalType;
 public class Occurrence implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "occurrence_id", nullable = false)
     private Integer occurrenceId;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 6)
+    @Column(name = "type", nullable = false, length = 6)
     private String type;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 127)
+    @Column(name = "description", nullable = false, length = 127)
     private String description;
+    
     @Basic(optional = false)
     @Column(name = "create_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+    
     @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
     @ManyToOne(optional = false)
     private Device device;
 
     public Occurrence() {
+    }
+
+    public Occurrence(Integer occurrenceId) {
+        this.occurrenceId = occurrenceId;
+    }
+
+    public Occurrence(Integer occurrenceId, String type, String description, Date createTime) {
+        this.occurrenceId = occurrenceId;
+        this.type = type;
+        this.description = description;
+        this.createTime = createTime;
     }
 
     public Occurrence(String type, String description, Date createTime) {
@@ -126,7 +142,7 @@ public class Occurrence implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.Occurrence[ occurrenceId=" + occurrenceId + " ]";
+        return "ofm.model.entities.Occurrence[ occurrenceId=" + occurrenceId + " ]";
     }
     
 }

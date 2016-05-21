@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +27,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
+@Table(schema = "ofm", name = "data", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"device_id"})})
 @NamedQueries({
     @NamedQuery(name = "Data.findAll", query = "SELECT d FROM Data d"),
@@ -50,63 +48,96 @@ import javax.persistence.UniqueConstraint;
 public class Data implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "data_id", nullable = false)
     private Integer dataId;
     
-    @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    private Device device;
-    
     @Basic(optional = false)
     @Column(name = "sample_frequency", nullable = false)
     private int sampleFrequency;
+    
     @Basic(optional = false)
     @Column(name = "range_of_test", nullable = false)
     private int rangeOfTest;
+    
     @Basic(optional = false)
     @Column(name = "pulse_width", nullable = false)
     private int pulseWidth;
+    
     @Basic(optional = false)
     @Column(name = "wave_length", nullable = false)
     private int waveLength;
+    
     @Basic(optional = false)
     @Column(name = "test_time", nullable = false)
     private int testTime;
+    
     @Basic(optional = false)
     @Column(name = "group_refractive_index", nullable = false)
     private float groupRefractiveIndex;
+    
     @Basic(optional = false)
     @Column(name = "link_length", nullable = false)
     private float linkLength;
+    
     @Basic(optional = false)
     @Column(name = "link_loss", nullable = false)
     private float linkLoss;
+    
     @Basic(optional = false)
     @Column(name = "link_attenuation", nullable = false)
     private float linkAttenuation;
+    
     @Basic(optional = false)
     @Column(name = "non_reflecting_threshold", nullable = false)
     private float nonReflectingThreshold;
+    
     @Basic(optional = false)
     @Column(name = "end_threshold", nullable = false)
     private float endThreshold;
+    
     @Basic(optional = false)
     @Column(name = "test_mode", nullable = false)
     private float testMode;
+    
     @Basic(optional = false)
     @Column(name = "test_way", nullable = false)
     private int testWay;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "data", fetch = FetchType.LAZY)
-    private List<DataEvent> dataEventList = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "data", fetch = FetchType.EAGER)
-    private List<DataGraphic> dataGraphicList = new ArrayList<>();
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "data")
+    private List<DataEvent> dataEventList;
+    
+    @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
+    @OneToOne(optional = false)
+    private Device device;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "data")
+    private List<DataGraphic> dataGraphicList;
 
     public Data() {
+    }
+
+    public Data(Integer dataId) {
+        this.dataId = dataId;
+    }
+
+    public Data(Integer dataId, int sampleFrequency, int rangeOfTest, int pulseWidth, int waveLength, int testTime, float groupRefractiveIndex, float linkLength, float linkLoss, float linkAttenuation, float nonReflectingThreshold, float endThreshold, float testMode, int testWay) {
+        this.dataId = dataId;
+        this.sampleFrequency = sampleFrequency;
+        this.rangeOfTest = rangeOfTest;
+        this.pulseWidth = pulseWidth;
+        this.waveLength = waveLength;
+        this.testTime = testTime;
+        this.groupRefractiveIndex = groupRefractiveIndex;
+        this.linkLength = linkLength;
+        this.linkLoss = linkLoss;
+        this.linkAttenuation = linkAttenuation;
+        this.nonReflectingThreshold = nonReflectingThreshold;
+        this.endThreshold = endThreshold;
+        this.testMode = testMode;
+        this.testWay = testWay;
     }
 
     public Data(int sampleFrequency, int rangeOfTest, int pulseWidth, int waveLength, int testTime, float groupRefractiveIndex, float linkLength, float linkLoss, float linkAttenuation, float nonReflectingThreshold, float endThreshold, float testMode, int testWay) {
@@ -283,7 +314,7 @@ public class Data implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.Data[ dataId=" + dataId + " ]";
+        return "ofm.model.entities.Data[ dataId=" + dataId + " ]";
     }
     
 }

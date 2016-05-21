@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,7 +28,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
+@Table(schema = "ofm", name = "user", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"email"}),
     @UniqueConstraint(columnNames = {"username"})})
 @NamedQueries({
@@ -42,35 +42,56 @@ import javax.persistence.UniqueConstraint;
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "user_id", nullable = false)
     private Integer userId;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 16)
+    @Column(name = "username", nullable = false, length = 16)
     private String username;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 255)
+    @Column(name = "email", nullable = false, length = 255)
     private String email;
+    
     @Basic(optional = false)
-    @Column(nullable = false, length = 32)
+    @Column(name = "password", nullable = false, length = 32)
     private String password;
+    
     @Basic(optional = false)
     @Column(name = "create_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+    
     @Column(name = "update_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Parameter> parameterList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Limit> limitList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Device> deviceList;
 
     public User() {
+    }
+
+    public User(Integer userId) {
+        this.userId = userId;
+    }
+
+    public User(Integer userId, String username, String email, String password, Date createTime) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.createTime = createTime;
     }
 
     public User(String username, String email, String password, Date createTime) {
@@ -174,7 +195,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.User[ userId=" + userId + " ]";
+        return "ofm.model.entities.User[ userId=" + userId + " ]";
     }
     
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,7 +28,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
+@Table(schema = "ofm", name = "limit", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"device_id"})})
 @NamedQueries({
     @NamedQuery(name = "Limit.findAll", query = "SELECT l FROM Limit l"),
@@ -48,56 +48,90 @@ import javax.persistence.UniqueConstraint;
 public class Limit implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "limit_id", nullable = false)
     private Integer limitId;
+    
     @Basic(optional = false)
     @Column(name = "insertion_green", nullable = false)
     private float insertionGreen;
+    
     @Basic(optional = false)
     @Column(name = "reflection_green", nullable = false)
     private float reflectionGreen;
+    
     @Basic(optional = false)
     @Column(name = "distance_green", nullable = false)
     private float distanceGreen;
+    
     @Basic(optional = false)
     @Column(name = "attenuation_green", nullable = false)
     private float attenuationGreen;
+    
     @Basic(optional = false)
     @Column(name = "acumulation_green", nullable = false)
     private float acumulationGreen;
+    
     @Basic(optional = false)
     @Column(name = "insertion_yellow", nullable = false)
     private float insertionYellow;
+    
     @Basic(optional = false)
     @Column(name = "reflection_yellow", nullable = false)
     private float reflectionYellow;
+    
     @Basic(optional = false)
     @Column(name = "distance_yellow", nullable = false)
     private float distanceYellow;
+    
     @Basic(optional = false)
     @Column(name = "attenuation_yellow", nullable = false)
     private float attenuationYellow;
+    
     @Basic(optional = false)
     @Column(name = "acumulation_yellow", nullable = false)
     private float acumulationYellow;
+    
     @Basic(optional = false)
     @Column(name = "create_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+    
     @Column(name = "update_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+    
     @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
     @OneToOne(optional = false)
     private Device device;
+    
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     @ManyToOne(optional = false)
     private User user;
 
     public Limit() {
+    }
+
+    public Limit(Integer limitId) {
+        this.limitId = limitId;
+    }
+
+    public Limit(Integer limitId, float insertionGreen, float reflectionGreen, float distanceGreen, float attenuationGreen, float acumulationGreen, float insertionYellow, float reflectionYellow, float distanceYellow, float attenuationYellow, float acumulationYellow, Date createTime) {
+        this.limitId = limitId;
+        this.insertionGreen = insertionGreen;
+        this.reflectionGreen = reflectionGreen;
+        this.distanceGreen = distanceGreen;
+        this.attenuationGreen = attenuationGreen;
+        this.acumulationGreen = acumulationGreen;
+        this.insertionYellow = insertionYellow;
+        this.reflectionYellow = reflectionYellow;
+        this.distanceYellow = distanceYellow;
+        this.attenuationYellow = attenuationYellow;
+        this.acumulationYellow = acumulationYellow;
+        this.createTime = createTime;
     }
 
     public Limit(float insertionGreen, float reflectionGreen, float distanceGreen, float attenuationGreen, float acumulationGreen, float insertionYellow, float reflectionYellow, float distanceYellow, float attenuationYellow, float acumulationYellow, Date createTime) {
@@ -256,7 +290,7 @@ public class Limit implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.Limit[ limitId=" + limitId + " ]";
+        return "ofm.model.entities.Limit[ limitId=" + limitId + " ]";
     }
     
 }

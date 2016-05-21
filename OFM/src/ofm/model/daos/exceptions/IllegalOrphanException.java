@@ -1,4 +1,4 @@
-package com.net.multiway.ofm.daos.exceptions;
+package ofm.model.daos.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

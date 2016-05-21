@@ -3,23 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.daos;
+package ofm.model.daos;
 
-import com.net.multiway.ofm.daos.exceptions.IllegalOrphanException;
-import com.net.multiway.ofm.daos.exceptions.NonexistentEntityException;
-import com.net.multiway.ofm.entities.Data;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.net.multiway.ofm.entities.Device;
-import com.net.multiway.ofm.entities.DataEvent;
+import ofm.model.entities.Device;
+import ofm.model.entities.DataEvent;
 import java.util.ArrayList;
 import java.util.List;
-import com.net.multiway.ofm.entities.DataGraphic;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import ofm.model.daos.exceptions.IllegalOrphanException;
+import ofm.model.daos.exceptions.NonexistentEntityException;
+import ofm.model.entities.Data;
+import ofm.model.entities.DataGraphic;
 
 /**
  *

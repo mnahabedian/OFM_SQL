@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,7 +28,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
-@Table(catalog = "ofm", schema = "ofm", uniqueConstraints = {
+@Table(schema = "ofm", name = "parameter", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"device_id"})})
 @NamedQueries({
     @NamedQuery(name = "Parameter.findAll", query = "SELECT p FROM Parameter p"),
@@ -51,65 +51,105 @@ import javax.persistence.UniqueConstraint;
 public class Parameter implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "parameter_id", nullable = false)
     private Integer parameterId;
+    
     @Basic(optional = false)
     @Column(name = "measuring_range_of_test", nullable = false)
     private int measuringRangeOfTest;
+    
     @Basic(optional = false)
     @Column(name = "test_pulse_width", nullable = false)
     private int testPulseWidth;
+    
     @Basic(optional = false)
     @Column(name = "measuring_time", nullable = false)
     private int measuringTime;
+    
     @Basic(optional = false)
     @Column(name = "test_wave_length", nullable = false)
     private int testWaveLength;
+    
     @Basic(optional = false)
     @Column(name = "measure_mode", nullable = false)
     private int measureMode;
+    
     @Basic(optional = false)
     @Column(name = "refractive_index", nullable = false)
     private float refractiveIndex;
+    
     @Basic(optional = false)
     @Column(name = "non_reflaction_threshold", nullable = false)
     private float nonReflactionThreshold;
+    
     @Basic(optional = false)
     @Column(name = "end_threshold", nullable = false)
     private float endThreshold;
+    
     @Basic(optional = false)
     @Column(name = "reflection_threshold", nullable = false)
     private float reflectionThreshold;
+    
     @Basic(optional = false)
     @Column(name = "optimize_mode", nullable = false)
     private int optimizeMode;
+    
     @Basic(optional = false)
     @Column(name = "enabled_refresh", nullable = false)
     private int enabledRefresh;
+    
     @Basic(optional = false)
     @Column(name = "refresh_cycle", nullable = false)
     private int refreshCycle;
+    
     @Basic(optional = false)
     @Column(name = "cycle_time", nullable = false)
     private int cycleTime;
+    
     @Basic(optional = false)
     @Column(name = "create_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+    
     @Column(name = "update_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+    
     @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
     @OneToOne(optional = false)
     private Device device;
+    
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     @ManyToOne(optional = false)
     private User user;
 
     public Parameter() {
+    }
+
+    public Parameter(Integer parameterId) {
+        this.parameterId = parameterId;
+    }
+
+    public Parameter(Integer parameterId, int measuringRangeOfTest, int testPulseWidth, int measuringTime, int testWaveLength, int measureMode, float refractiveIndex, float nonReflactionThreshold, float endThreshold, float reflectionThreshold, int optimizeMode, int enabledRefresh, int refreshCycle, int cycleTime, Date createTime) {
+        this.parameterId = parameterId;
+        this.measuringRangeOfTest = measuringRangeOfTest;
+        this.testPulseWidth = testPulseWidth;
+        this.measuringTime = measuringTime;
+        this.testWaveLength = testWaveLength;
+        this.measureMode = measureMode;
+        this.refractiveIndex = refractiveIndex;
+        this.nonReflactionThreshold = nonReflactionThreshold;
+        this.endThreshold = endThreshold;
+        this.reflectionThreshold = reflectionThreshold;
+        this.optimizeMode = optimizeMode;
+        this.enabledRefresh = enabledRefresh;
+        this.refreshCycle = refreshCycle;
+        this.cycleTime = cycleTime;
+        this.createTime = createTime;
     }
 
     public Parameter(int measuringRangeOfTest, int testPulseWidth, int measuringTime, int testWaveLength, int measureMode, float refractiveIndex, float nonReflactionThreshold, float endThreshold, float reflectionThreshold, int optimizeMode, int enabledRefresh, int refreshCycle, int cycleTime, Date createTime) {
@@ -295,7 +335,7 @@ public class Parameter implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.Parameter[ parameterId=" + parameterId + " ]";
+        return "ofm.model.entities.Parameter[ parameterId=" + parameterId + " ]";
     }
     
 }

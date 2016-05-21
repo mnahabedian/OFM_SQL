@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.multiway.ofm.entities;
+package ofm.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,11 +23,11 @@ import javax.persistence.Table;
  * @author joshua
  */
 @Entity
-@Table(name = "data_graphic", catalog = "ofm", schema = "ofm")
+@Table(schema = "ofm", name = "data_graphic")
 @NamedQueries({
     @NamedQuery(name = "DataGraphic.findAll", query = "SELECT d FROM DataGraphic d"),
     @NamedQuery(name = "DataGraphic.findByDataGraphicId", query = "SELECT d FROM DataGraphic d WHERE d.dataGraphicId = :dataGraphicId"),
-    @NamedQuery(name = "DataGraphic.findByValue", query = "SELECT d FROM DataGraphic d WHERE d.point = :point")})
+    @NamedQuery(name = "DataGraphic.findByPoint", query = "SELECT d FROM DataGraphic d WHERE d.point = :point")})
 public class DataGraphic implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,20 +38,29 @@ public class DataGraphic implements Serializable {
     @Column(name = "data_graphic_id", nullable = false)
     private Long dataGraphicId;
     
-    @JoinColumn(name = "data_id", referencedColumnName = "data_id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Data data;
-    
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "point", nullable = false)
     private int point;
+    
+    @JoinColumn(name = "data_id", referencedColumnName = "data_id", nullable = false)
+    @ManyToOne(optional = false)
+    private Data data;
 
     public DataGraphic() {
     }
 
-    public DataGraphic(Data data, int value) {
+    public DataGraphic(Long dataGraphicId) {
+        this.dataGraphicId = dataGraphicId;
+    }
+
+    public DataGraphic(Long dataGraphicId, int point) {
+        this.dataGraphicId = dataGraphicId;
+        this.point = point;
+    }
+
+    public DataGraphic(Data data, int point) {
         this.data = data;
-        this.point = value;
+        this.point = point;
     }
 
     public Long getDataGraphicId() {
@@ -101,7 +109,7 @@ public class DataGraphic implements Serializable {
 
     @Override
     public String toString() {
-        return "com.net.multiway.ofm.entities.DataGraphic[ dataGraphicId=" + dataGraphicId + " ]";
+        return "ofm.model.entities.DataGraphic[ dataGraphicId=" + dataGraphicId + " ]";
     }
     
 }

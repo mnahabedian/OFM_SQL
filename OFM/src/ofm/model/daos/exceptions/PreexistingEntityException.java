@@ -1,4 +1,4 @@
-package com.net.multiway.ofm.daos.exceptions;
+package ofm.model.daos.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {
