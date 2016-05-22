@@ -9,6 +9,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.Date;
 import java.util.List;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
@@ -29,11 +30,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 /**
@@ -71,7 +75,7 @@ public class Data implements Externalizable {
         this._dataId = dataId;
     }
 
-    public Data(Integer dataId, Integer sampleFrequency, Integer rangeOfTest, Integer pulseWidth, Integer waveLength, Integer testTime, Float groupRefractiveIndex, Float linkLength, Float linkLoss, Float linkAttenuation, Float nonReflectingThreshold, Float endThreshold, Float testMode, Integer testWay) {
+    public Data(Integer dataId, Integer sampleFrequency, Integer rangeOfTest, Integer pulseWidth, Integer waveLength, Integer testTime, Float groupRefractiveIndex, Float linkLength, Float linkLoss, Float linkAttenuation, Float nonReflectingThreshold, Float endThreshold, Float testMode, Integer testWay, Date createTime) {
         this._dataId = dataId;
         this._sampleFrequency = sampleFrequency;
         this._rangeOfTest = rangeOfTest;
@@ -86,9 +90,10 @@ public class Data implements Externalizable {
         this._endThreshold = endThreshold;
         this._testMode = testMode;
         this._testWay = testWay;
+        this._createTime = createTime;
     }
 
-    public Data(Integer sampleFrequency, Integer rangeOfTest, Integer pulseWidth, Integer waveLength, Integer testTime, Float groupRefractiveIndex, Float linkLength, Float linkLoss, Float linkAttenuation, Float nonReflectingThreshold, Float endThreshold, Float testMode, Integer testWay) {
+    public Data(Integer sampleFrequency, Integer rangeOfTest, Integer pulseWidth, Integer waveLength, Integer testTime, Float groupRefractiveIndex, Float linkLength, Float linkLoss, Float linkAttenuation, Float nonReflectingThreshold, Float endThreshold, Float testMode, Integer testWay, Date createTime) {
         this._sampleFrequency = sampleFrequency;
         this._rangeOfTest = rangeOfTest;
         this._pulseWidth = pulseWidth;
@@ -102,6 +107,7 @@ public class Data implements Externalizable {
         this._endThreshold = endThreshold;
         this._testMode = testMode;
         this._testWay = testWay;
+        this._createTime = createTime;
     }
 
     private IntegerProperty dataId;
@@ -512,6 +518,36 @@ public class Data implements Externalizable {
         return testWay;
     }
 
+    private ObjectProperty<Date> createTime;
+    private Date _createTime;
+    @Basic(optional = false)
+    @Column(name = "create_time", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getCreateTime() {
+        if (createTime == null) {
+            return _createTime;
+        }
+        else {
+            return createTime.get();
+        }
+    }
+
+    public void setCreateTime(Date createTime) {
+        if (this.createTime == null) {
+            this._createTime = createTime;
+        }
+        else {
+            this.createTime.set(createTime);
+        }
+    }
+    
+    public ObjectProperty<Date> createTimeProperty() {
+        if (createTime == null) {
+            createTime = new SimpleObjectProperty<>(this, "createTime", _createTime);
+        }
+        return createTime;
+    }
+
     private ListProperty<DataEvent> dataEventList;
     private List<DataEvent> _dataEventList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "data")
@@ -567,6 +603,35 @@ public class Data implements Externalizable {
             device = new SimpleObjectProperty<>(this, "device", _device);
         }
         return device;
+    }
+
+    private ObjectProperty<User> user;
+    private User _user;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @ManyToOne(optional = false)
+    public User getUser() {
+        if (user == null) {
+            return _user;
+        }
+        else {
+            return user.get();
+        }
+    }
+
+    public void setUser(User user) {
+        if (this.user == null) {
+            this._user = user;
+        }
+        else {
+            this.user.set(user);
+        }
+    }
+
+    public ObjectProperty<User> userProperty() {
+        if (user == null) {
+            user = new SimpleObjectProperty<>(this, "user", _user);
+        }
+        return user;
     }
 
     private ListProperty<DataGraphic> dataGraphicList;
@@ -638,8 +703,10 @@ public class Data implements Externalizable {
         out.writeObject(getEndThreshold());
         out.writeObject(getTestMode());
         out.writeObject(getTestWay());
+        out.writeObject(getCreateTime());
         out.writeObject(getDataEventList());
         out.writeObject(getDevice());
+        out.writeObject(getUser());
         out.writeObject(getDataGraphicList());
     }
 
@@ -659,8 +726,10 @@ public class Data implements Externalizable {
         setEndThreshold((Float)in.readObject());
         setTestMode((Float)in.readObject());
         setTestWay((Integer)in.readObject());
+        setCreateTime((Date)in.readObject());
         setDataEventList((List<DataEvent>)in.readObject());
         setDevice((Device)in.readObject());
+        setUser((User)in.readObject());                
         setDataGraphicList((List<DataGraphic>)in.readObject());
     }
     

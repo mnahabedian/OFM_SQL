@@ -20,7 +20,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
@@ -256,7 +255,35 @@ public class User implements Externalizable {
             updateTime = new SimpleObjectProperty<>(this, "updateTime", _updateTime);
         }
         return updateTime;
-    }    
+    }
+    
+    private ListProperty<Data> dataList;
+    private List<Data> _dataList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public List<Data> getDataList() {
+        if (dataList == null) {
+            return _dataList;
+        }
+        else {
+            return dataList.get();
+        }
+    }
+
+    public void setDataList(List<Data> dataList) {
+        if (this.dataList == null) {
+            this._dataList = dataList;
+        }
+        else {
+            this.dataList.set(FXCollections.observableArrayList(dataList));
+        }
+    }
+
+    public ListProperty<Data> dataListProperty() {
+        if (dataList == null) {
+            dataList = new SimpleListProperty<>(this, "dataList", FXCollections.observableArrayList(_dataList));
+        }
+        return dataList;
+    }
 
     private ListProperty<Parameter> parameterList;
     private List<Parameter> _parameterList;
@@ -375,6 +402,7 @@ public class User implements Externalizable {
         out.writeObject(getPassword());
         out.writeObject(getCreateTime());
         out.writeObject(getUpdateTime());
+        out.writeObject(getDataList());
         out.writeObject(getParameterList());
         out.writeObject(getLimitList());
         out.writeObject(getDeviceList());
@@ -388,6 +416,7 @@ public class User implements Externalizable {
         setPassword((String)in.readObject());
         setCreateTime((Date)in.readObject());
         setUpdateTime((Date)in.readObject());
+        setDataList((List<Data>)in.readObject());
         setParameterList((List<Parameter>)in.readObject());
         setLimitList((List<Limit>)in.readObject());
         setDeviceList((List<Device>)in.readObject());

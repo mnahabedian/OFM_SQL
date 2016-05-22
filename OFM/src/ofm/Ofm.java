@@ -90,8 +90,9 @@ public class Ofm extends Application {
             limitDao.create(limit);
             device.setLimit(limit); //enlace bidirecional
 
-            Data data = new Data(0, 0, 0, 0, 0, new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), 0);
+            Data data = new Data(0, 0, 0, 0, 0, new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), 0, new Date());
             data.setDevice(device); //enlace bidirecional
+            data.setUser(user);
             dataDao.create(data);
             device.setData(data); //enlace bidirecional
             
@@ -123,6 +124,9 @@ public class Ofm extends Application {
             System.out.println(device.getParameter().toString());
             System.out.println(device.getLimit().toString());
             System.out.println(device.getData().toString());
+            
+//            dataDao.destroy(device.getData().getDataId());
+//            device.setData(null);
             
             List<Occurrence> occurrences = device.getOccurrenceList();
             for(Occurrence occurrence : occurrences) {
