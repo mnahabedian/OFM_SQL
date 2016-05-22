@@ -90,7 +90,7 @@ public class Ofm extends Application {
             limitDao.create(limit);
             device.setLimit(limit); //enlace bidirecional
 
-            Data data = new Data(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            Data data = new Data(0, 0, 0, 0, 0, new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), 0);
             data.setDevice(device); //enlace bidirecional
             dataDao.create(data);
             device.setData(data); //enlace bidirecional

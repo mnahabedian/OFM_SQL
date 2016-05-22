@@ -519,7 +519,7 @@ public class Device implements Externalizable {
         setData((Data)in.readObject());
         setParameter((Parameter)in.readObject());
         setLimit((Limit)in.readObject());
-        setOccurrenceList((ObservableList<Occurrence>)in.readObject());
+        setOccurrenceList((List<Occurrence>)in.readObject());
         setUser((User)in.readObject());
     }
     

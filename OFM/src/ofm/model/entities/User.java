@@ -388,9 +388,9 @@ public class User implements Externalizable {
         setPassword((String)in.readObject());
         setCreateTime((Date)in.readObject());
         setUpdateTime((Date)in.readObject());
-        setParameterList((ObservableList<Parameter>)in.readObject());
-        setLimitList((ObservableList<Limit>)in.readObject());
-        setDeviceList((ObservableList<Device>)in.readObject());
+        setParameterList((List<Parameter>)in.readObject());
+        setLimitList((List<Limit>)in.readObject());
+        setDeviceList((List<Device>)in.readObject());
     }
     
 }
