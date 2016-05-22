@@ -102,7 +102,7 @@ public class Ofm extends Application {
             }
             
             for(int i = 0; i < 5; i++) {
-                DataEvent dataEvent = new DataEvent(0, 0, 0, 0, 0, 0);
+                DataEvent dataEvent = new DataEvent(new Float(0), 0, new Float(0), new Float(0), new Float(0), new Float(0));
                 dataEvent.setData(data); //enlace bidirecional
                 dataEventDao.create(dataEvent);
                 data.getDataEventList().add(dataEvent); //enlace bidirecional
