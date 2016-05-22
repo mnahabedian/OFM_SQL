@@ -78,13 +78,13 @@ public class Ofm extends Application {
             device.setStatus("Active");
             deviceDao.create(device);
 
-            Parameter parameter = new Parameter(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Date());
+            Parameter parameter = new Parameter(0, 0, 0, 0, 0, new Float(0), new Float(0), new Float(0), new Float(0), 0, 0, 0, 0, new Date());
             parameter.setDevice(device); // enlace bidirecional
             parameter.setUser(user);
             parameterDao.create(parameter);
             device.setParameter(parameter); // enlace bidirecional
 
-            Limit limit = new Limit(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Date());
+            Limit limit = new Limit(new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Float(0), new Date());
             limit.setDevice(device); // enlace bidirecional
             limit.setUser(user);
             limitDao.create(limit);

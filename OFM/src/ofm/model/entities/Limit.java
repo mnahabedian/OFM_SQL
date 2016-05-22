@@ -5,8 +5,19 @@
  */
 package ofm.model.entities;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Date;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +39,7 @@ import javax.persistence.UniqueConstraint;
  * @author joshua
  */
 @Entity
+@Access(AccessType.PROPERTY)
 @Table(schema = "ofm", name = "limit", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"device_id"})})
 @NamedQueries({
@@ -45,233 +57,488 @@ import javax.persistence.UniqueConstraint;
     @NamedQuery(name = "Limit.findByAcumulationYellow", query = "SELECT l FROM Limit l WHERE l.acumulationYellow = :acumulationYellow"),
     @NamedQuery(name = "Limit.findByCreateTime", query = "SELECT l FROM Limit l WHERE l.createTime = :createTime"),
     @NamedQuery(name = "Limit.findByUpdateTime", query = "SELECT l FROM Limit l WHERE l.updateTime = :updateTime")})
-public class Limit implements Serializable {
+public class Limit implements Externalizable {
 
     private static final long serialVersionUID = 1L;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "limit_id", nullable = false)
-    private Integer limitId;
-    
-    @Basic(optional = false)
-    @Column(name = "insertion_green", nullable = false)
-    private float insertionGreen;
-    
-    @Basic(optional = false)
-    @Column(name = "reflection_green", nullable = false)
-    private float reflectionGreen;
-    
-    @Basic(optional = false)
-    @Column(name = "distance_green", nullable = false)
-    private float distanceGreen;
-    
-    @Basic(optional = false)
-    @Column(name = "attenuation_green", nullable = false)
-    private float attenuationGreen;
-    
-    @Basic(optional = false)
-    @Column(name = "acumulation_green", nullable = false)
-    private float acumulationGreen;
-    
-    @Basic(optional = false)
-    @Column(name = "insertion_yellow", nullable = false)
-    private float insertionYellow;
-    
-    @Basic(optional = false)
-    @Column(name = "reflection_yellow", nullable = false)
-    private float reflectionYellow;
-    
-    @Basic(optional = false)
-    @Column(name = "distance_yellow", nullable = false)
-    private float distanceYellow;
-    
-    @Basic(optional = false)
-    @Column(name = "attenuation_yellow", nullable = false)
-    private float attenuationYellow;
-    
-    @Basic(optional = false)
-    @Column(name = "acumulation_yellow", nullable = false)
-    private float acumulationYellow;
-    
-    @Basic(optional = false)
-    @Column(name = "create_time", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
-    
-    @Column(name = "update_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateTime;
-    
-    @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
-    @OneToOne(optional = false)
-    private Device device;
-    
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    @ManyToOne(optional = false)
-    private User user;
-
     public Limit() {
     }
 
     public Limit(Integer limitId) {
-        this.limitId = limitId;
+        this._limitId = limitId;
     }
 
-    public Limit(Integer limitId, float insertionGreen, float reflectionGreen, float distanceGreen, float attenuationGreen, float acumulationGreen, float insertionYellow, float reflectionYellow, float distanceYellow, float attenuationYellow, float acumulationYellow, Date createTime) {
-        this.limitId = limitId;
-        this.insertionGreen = insertionGreen;
-        this.reflectionGreen = reflectionGreen;
-        this.distanceGreen = distanceGreen;
-        this.attenuationGreen = attenuationGreen;
-        this.acumulationGreen = acumulationGreen;
-        this.insertionYellow = insertionYellow;
-        this.reflectionYellow = reflectionYellow;
-        this.distanceYellow = distanceYellow;
-        this.attenuationYellow = attenuationYellow;
-        this.acumulationYellow = acumulationYellow;
-        this.createTime = createTime;
+    public Limit(Integer limitId, Float insertionGreen, Float reflectionGreen, Float distanceGreen, Float attenuationGreen, Float acumulationGreen, Float insertionYellow, Float reflectionYellow, Float distanceYellow, Float attenuationYellow, Float acumulationYellow, Date createTime) {
+        this._limitId = limitId;
+        this._insertionGreen = insertionGreen;
+        this._reflectionGreen = reflectionGreen;
+        this._distanceGreen = distanceGreen;
+        this._attenuationGreen = attenuationGreen;
+        this._acumulationGreen = acumulationGreen;
+        this._insertionYellow = insertionYellow;
+        this._reflectionYellow = reflectionYellow;
+        this._distanceYellow = distanceYellow;
+        this._attenuationYellow = attenuationYellow;
+        this._acumulationYellow = acumulationYellow;
+        this._createTime = createTime;
     }
 
-    public Limit(float insertionGreen, float reflectionGreen, float distanceGreen, float attenuationGreen, float acumulationGreen, float insertionYellow, float reflectionYellow, float distanceYellow, float attenuationYellow, float acumulationYellow, Date createTime) {
-        this.insertionGreen = insertionGreen;
-        this.reflectionGreen = reflectionGreen;
-        this.distanceGreen = distanceGreen;
-        this.attenuationGreen = attenuationGreen;
-        this.acumulationGreen = acumulationGreen;
-        this.insertionYellow = insertionYellow;
-        this.reflectionYellow = reflectionYellow;
-        this.distanceYellow = distanceYellow;
-        this.attenuationYellow = attenuationYellow;
-        this.acumulationYellow = acumulationYellow;
-        this.createTime = createTime;
+    public Limit(Float insertionGreen, Float reflectionGreen, Float distanceGreen, Float attenuationGreen, Float acumulationGreen, Float insertionYellow, Float reflectionYellow, Float distanceYellow, Float attenuationYellow, Float acumulationYellow, Date createTime) {
+        this._insertionGreen = insertionGreen;
+        this._reflectionGreen = reflectionGreen;
+        this._distanceGreen = distanceGreen;
+        this._attenuationGreen = attenuationGreen;
+        this._acumulationGreen = acumulationGreen;
+        this._insertionYellow = insertionYellow;
+        this._reflectionYellow = reflectionYellow;
+        this._distanceYellow = distanceYellow;
+        this._attenuationYellow = attenuationYellow;
+        this._acumulationYellow = acumulationYellow;
+        this._createTime = createTime;
     }
 
+    private IntegerProperty limitId;
+    private Integer _limitId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "limit_id", nullable = false)
     public Integer getLimitId() {
-        return limitId;
+        if (limitId == null) {
+            return _limitId;
+        }
+        else {
+            return limitId.get();
+        }        
     }
 
     public void setLimitId(Integer limitId) {
-        this.limitId = limitId;
+        if (this.limitId == null) {
+            this._limitId = limitId;
+        }
+        else {
+            this.limitId.set(limitId);
+        }        
     }
 
-    public float getInsertionGreen() {
+    public IntegerProperty limitIdProperty() {
+        if (limitId == null) {
+            limitId = new SimpleIntegerProperty(this, "limitId", _limitId);
+        }
+        return limitId;
+    }
+
+    private FloatProperty insertionGreen;
+    private Float _insertionGreen;
+    @Basic(optional = false)
+    @Column(name = "insertion_green", nullable = false)
+    public Float getInsertionGreen() {
+        if (insertionGreen == null) {
+            return _insertionGreen;
+        }
+        else {
+            return insertionGreen.get();
+        }        
+    }
+
+    public void setInsertionGreen(Float insertionGreen) {
+        if (this.insertionGreen == null) {
+            this._insertionGreen = insertionGreen;
+        }
+        else {
+            this.insertionGreen.set(insertionGreen);
+        }        
+    }
+    
+    public FloatProperty insertionGreenProperty() {
+        if (insertionGreen == null) {
+            insertionGreen = new SimpleFloatProperty(this, "insertionGreen", _insertionGreen);
+        }
         return insertionGreen;
     }
 
-    public void setInsertionGreen(float insertionGreen) {
-        this.insertionGreen = insertionGreen;
+    private FloatProperty reflectionGreen;
+    private Float _reflectionGreen;
+    @Basic(optional = false)
+    @Column(name = "reflection_green", nullable = false)
+    public Float getReflectionGreen() {
+        if (reflectionGreen == null) {
+            return _reflectionGreen;
+        }
+        else {
+            return reflectionGreen.get();
+        }        
     }
 
-    public float getReflectionGreen() {
+    public void setReflectionGreen(Float reflectionGreen) {
+        if (this.reflectionGreen == null) {
+            this._reflectionGreen = reflectionGreen;
+        }
+        else {
+            this.reflectionGreen.set(reflectionGreen);
+        }        
+    }
+    
+    public FloatProperty reflectionGreenProperty() {
+        if (reflectionGreen == null) {
+            reflectionGreen = new SimpleFloatProperty(this, "reflectionGreen", _reflectionGreen);
+        }
         return reflectionGreen;
     }
 
-    public void setReflectionGreen(float reflectionGreen) {
-        this.reflectionGreen = reflectionGreen;
+    private FloatProperty distanceGreen;
+    private Float _distanceGreen;
+    @Basic(optional = false)
+    @Column(name = "distance_green", nullable = false)
+    public Float getDistanceGreen() {
+        if (distanceGreen == null) {
+            return _distanceGreen;
+        }
+        else {
+            return distanceGreen.get();
+        }        
     }
 
-    public float getDistanceGreen() {
+    public void setDistanceGreen(Float distanceGreen) {
+        if (this.distanceGreen == null) {
+            this._distanceGreen = distanceGreen;
+        }
+        else {
+            this.distanceGreen.set(distanceGreen);
+        }        
+    }
+
+    public FloatProperty distanceGreenProperty() {
+        if (distanceGreen == null) {
+            distanceGreen = new SimpleFloatProperty(this, "distanceGreen", _distanceGreen);
+        }
         return distanceGreen;
     }
 
-    public void setDistanceGreen(float distanceGreen) {
-        this.distanceGreen = distanceGreen;
+    private FloatProperty attenuationGreen;
+    private Float _attenuationGreen;
+    @Basic(optional = false)
+    @Column(name = "attenuation_green", nullable = false)
+    public Float getAttenuationGreen() {
+        if (attenuationGreen == null) {
+            return _attenuationGreen;
+        }
+        else {
+            return attenuationGreen.get();
+        }        
     }
 
-    public float getAttenuationGreen() {
+    public void setAttenuationGreen(Float attenuationGreen) {
+        if (this.attenuationGreen == null) {
+            this._attenuationGreen = attenuationGreen;
+        }
+        else {
+            this.attenuationGreen.set(attenuationGreen);
+        }        
+    }
+
+    public FloatProperty attenuationGreenProperty() {
+        if (attenuationGreen == null) {
+            attenuationGreen = new SimpleFloatProperty(this, "attenuationGreen", _attenuationGreen);
+        }
         return attenuationGreen;
     }
 
-    public void setAttenuationGreen(float attenuationGreen) {
-        this.attenuationGreen = attenuationGreen;
+    private FloatProperty acumulationGreen;
+    private Float _acumulationGreen;
+    @Basic(optional = false)
+    @Column(name = "acumulation_green", nullable = false)
+    public Float getAcumulationGreen() {
+        if (acumulationGreen == null) {
+            return _acumulationGreen;
+        }
+        else {
+            return acumulationGreen.get();
+        }        
     }
 
-    public float getAcumulationGreen() {
+    public void setAcumulationGreen(Float acumulationGreen) {
+        if (this.acumulationGreen == null) {
+            this._acumulationGreen = acumulationGreen;
+        }
+        else {
+            this.acumulationGreen.set(acumulationGreen);
+        }        
+    }
+
+    public FloatProperty acumulationGreenProperty() {
+        if (acumulationGreen == null) {
+            acumulationGreen = new SimpleFloatProperty(this, "acumulationGreen", _acumulationGreen);
+        }
         return acumulationGreen;
     }
 
-    public void setAcumulationGreen(float acumulationGreen) {
-        this.acumulationGreen = acumulationGreen;
+    private FloatProperty insertionYellow;
+    private Float _insertionYellow;
+    @Basic(optional = false)
+    @Column(name = "insertion_yellow", nullable = false)
+    public Float getInsertionYellow() {
+        if (insertionYellow == null) {
+            return _insertionYellow;
+        }
+        else {
+            return insertionYellow.get();
+        }        
     }
 
-    public float getInsertionYellow() {
+    public void setInsertionYellow(Float insertionYellow) {
+        if (this.insertionYellow == null) {
+            this._insertionYellow = insertionYellow;
+        }
+        else {
+            this.insertionYellow.set(insertionYellow);
+        }        
+    }
+
+    public FloatProperty insertionYellowProperty() {
+        if (insertionYellow == null) {
+            insertionYellow = new SimpleFloatProperty(this, "insertionYellow", _insertionYellow);
+        }
         return insertionYellow;
     }
 
-    public void setInsertionYellow(float insertionYellow) {
-        this.insertionYellow = insertionYellow;
+    private FloatProperty reflectionYellow;
+    private Float _reflectionYellow;
+    @Basic(optional = false)
+    @Column(name = "reflection_yellow", nullable = false)
+    public Float getReflectionYellow() {
+        if (reflectionYellow == null) {
+            return _reflectionYellow;
+        }
+        else {
+            return reflectionYellow.get();
+        }        
     }
 
-    public float getReflectionYellow() {
+    public void setReflectionYellow(Float reflectionYellow) {
+        if (this.reflectionYellow == null) {
+            this._reflectionYellow = reflectionYellow;
+        }
+        else {
+            this.reflectionYellow.set(reflectionYellow);
+        }        
+    }
+
+    public FloatProperty reflectionYellowProperty() {
+        if (reflectionYellow == null) {
+            reflectionYellow = new SimpleFloatProperty(this, "reflectionYellow", _reflectionYellow);
+        }
         return reflectionYellow;
     }
 
-    public void setReflectionYellow(float reflectionYellow) {
-        this.reflectionYellow = reflectionYellow;
+    private FloatProperty distanceYellow;
+    private Float _distanceYellow;
+    @Basic(optional = false)
+    @Column(name = "distance_yellow", nullable = false)
+    public Float getDistanceYellow() {
+        if (distanceYellow == null) {
+            return _distanceYellow;
+        }
+        else {
+            return distanceYellow.get();
+        }        
     }
 
-    public float getDistanceYellow() {
+    public void setDistanceYellow(Float distanceYellow) {
+        if (this.distanceYellow == null) {
+            this._distanceYellow = distanceYellow;
+        }
+        else {
+            this.distanceYellow.set(distanceYellow);
+        }        
+    }
+
+    public FloatProperty distanceYellowProperty() {
+        if (distanceYellow == null) {
+            distanceYellow = new SimpleFloatProperty(this, "distanceYellow", _distanceYellow);
+        }
         return distanceYellow;
     }
 
-    public void setDistanceYellow(float distanceYellow) {
-        this.distanceYellow = distanceYellow;
+    private FloatProperty attenuationYellow;
+    private Float _attenuationYellow;
+    @Basic(optional = false)
+    @Column(name = "attenuation_yellow", nullable = false)
+    public Float getAttenuationYellow() {
+        if (attenuationYellow == null) {
+            return _attenuationYellow;
+        }
+        else {
+            return attenuationYellow.get();
+        }        
     }
 
-    public float getAttenuationYellow() {
+    public void setAttenuationYellow(Float attenuationYellow) {
+        if (this.attenuationYellow == null) {
+            this._attenuationYellow = attenuationYellow;
+        }
+        else {
+            this.attenuationYellow.set(attenuationYellow);
+        }        
+    }
+
+    public FloatProperty attenuationYellowProperty() {
+        if (attenuationYellow == null) {
+            attenuationYellow = new SimpleFloatProperty(this, "attenuationYellow", _attenuationYellow);
+        }
         return attenuationYellow;
     }
 
-    public void setAttenuationYellow(float attenuationYellow) {
-        this.attenuationYellow = attenuationYellow;
+    private FloatProperty acumulationYellow;
+    private Float _acumulationYellow;
+    @Basic(optional = false)
+    @Column(name = "acumulation_yellow", nullable = false)
+    public Float getAcumulationYellow() {
+        if (acumulationYellow == null) {
+            return _acumulationYellow;
+        }
+        else {
+            return acumulationYellow.get();
+        }        
     }
 
-    public float getAcumulationYellow() {
+    public void setAcumulationYellow(Float acumulationYellow) {
+        if (this.acumulationYellow == null) {
+            this._acumulationYellow = acumulationYellow;
+        }
+        else {
+            this.acumulationYellow.set(acumulationYellow);
+        }        
+    }
+
+    public FloatProperty acumulationYellowProperty() {
+        if (acumulationYellow == null) {
+            acumulationYellow = new SimpleFloatProperty(this, "acumulationYellow", _acumulationYellow);
+        }
         return acumulationYellow;
     }
 
-    public void setAcumulationYellow(float acumulationYellow) {
-        this.acumulationYellow = acumulationYellow;
-    }
-
+    private ObjectProperty<Date> createTime;
+    private Date _createTime;
+    @Basic(optional = false)
+    @Column(name = "create_time", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getCreateTime() {
-        return createTime;
+        if (createTime == null) {
+            return _createTime;
+        }
+        else {
+            return createTime.get();
+        }        
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        if (this.createTime == null) {
+            this._createTime = createTime;
+        }
+        else {
+            this.createTime.set(createTime);
+        }        
     }
 
+    public ObjectProperty<Date> createTimeProperty() {
+        if (createTime == null) {
+            createTime = new SimpleObjectProperty<>(this, "createTime", _createTime);
+        }
+        return createTime;
+    }
+
+    private ObjectProperty<Date> updateTime;
+    private Date _updateTime;
+    @Column(name = "update_time")
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getUpdateTime() {
-        return updateTime;
+        if (updateTime == null) {
+            return _updateTime;
+        }
+        else {
+            return updateTime.get();
+        }        
     }
 
     public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+        if (this.updateTime == null) {
+            this._updateTime = updateTime;
+        }
+        else {
+            this.updateTime.set(updateTime);
+        }        
     }
 
+    public ObjectProperty<Date> Property() {
+        if (updateTime == null) {
+            updateTime = new SimpleObjectProperty<>(this, "updateTime", _updateTime);
+        }
+        return updateTime;
+    }
+
+    private ObjectProperty<Device> device;
+    private Device _device;
+    @JoinColumn(name = "device_id", referencedColumnName = "device_id", nullable = false)
+    @OneToOne(optional = false)
     public Device getDevice() {
-        return device;
+        if (device == null) {
+            return _device;
+        }
+        else {
+            return device.get();
+        }
     }
 
     public void setDevice(Device device) {
-        this.device = device;
+        if (this.device == null) {
+            this._device = device;
+        }
+        else {
+            this.device.set(device);
+        }
     }
 
+    public ObjectProperty<Device> deviceProperty() {
+        if (device == null) {
+            device = new SimpleObjectProperty<>(this, "device", _device);
+        }
+        return device;
+    }
+
+    private ObjectProperty<User> user;
+    private User _user;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @ManyToOne(optional = false)
     public User getUser() {
-        return user;
+        if (user == null) {
+            return _user;
+        }
+        else {
+            return user.get();
+        }
     }
 
     public void setUser(User user) {
-        this.user = user;
+        if (this.user == null) {
+            this._user = user;
+        }
+        else {
+            this.user.set(user);
+        }
+    }
+
+    public ObjectProperty<User> userProperty() {
+        if (user == null) {
+            user = new SimpleObjectProperty<>(this, "user", _user);
+        }
+        return user;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (limitId != null ? limitId.hashCode() : 0);
+        hash += (_limitId != null ? _limitId.hashCode() : 0);
         return hash;
     }
 
@@ -282,7 +549,7 @@ public class Limit implements Serializable {
             return false;
         }
         Limit other = (Limit) object;
-        if ((this.limitId == null && other.limitId != null) || (this.limitId != null && !this.limitId.equals(other.limitId))) {
+        if ((this._limitId == null && other._limitId != null) || (this._limitId != null && !this._limitId.equals(other._limitId))) {
             return false;
         }
         return true;
@@ -290,7 +557,45 @@ public class Limit implements Serializable {
 
     @Override
     public String toString() {
-        return "ofm.model.entities.Limit[ limitId=" + limitId + " ]";
+        return "ofm.model.entities.Limit[ limitId=" + _limitId + " - device=" + _device.toString() + " ]";
+    }
+    
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(getLimitId());
+        out.writeObject(getInsertionGreen());
+        out.writeObject(getReflectionGreen());
+        out.writeObject(getDistanceGreen());
+        out.writeObject(getAttenuationGreen());
+        out.writeObject(getAcumulationGreen());
+        out.writeObject(getInsertionYellow());
+        out.writeObject(getReflectionYellow());
+        out.writeObject(getDistanceYellow());
+        out.writeObject(getAttenuationYellow());
+        out.writeObject(getAcumulationYellow());
+        out.writeObject(getCreateTime());
+        out.writeObject(getUpdateTime());
+        out.writeObject(getDevice());
+        out.writeObject(getUser());
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        setLimitId((Integer)in.readObject());
+        setInsertionGreen((Float)in.readObject());
+        setReflectionGreen((Float)in.readObject());
+        setDistanceGreen((Float)in.readObject());
+        setAttenuationGreen((Float)in.readObject());
+        setAcumulationGreen((Float)in.readObject());
+        setInsertionYellow((Float)in.readObject());
+        setReflectionYellow((Float)in.readObject());
+        setDistanceYellow((Float)in.readObject());
+        setAttenuationYellow((Float)in.readObject());
+        setAcumulationYellow((Float)in.readObject());
+        setCreateTime((Date)in.readObject());
+        setUpdateTime((Date)in.readObject());
+        setDevice((Device)in.readObject());
+        setUser((User)in.readObject());
     }
     
 }
