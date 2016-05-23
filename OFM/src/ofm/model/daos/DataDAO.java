@@ -252,24 +252,26 @@ public class DataDAO implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The data with id " + id + " no longer exists.", enfe);
             }
-            List<String> illegalOrphanMessages = null;
-            List<DataEvent> dataEventListOrphanCheck = data.getDataEventList();
-            for (DataEvent dataEventListOrphanCheckDataEvent : dataEventListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Data (" + data + ") cannot be destroyed since the DataEvent " + dataEventListOrphanCheckDataEvent + " in its dataEventList field has a non-nullable data field.");
-            }
-            List<DataGraphic> dataGraphicListOrphanCheck = data.getDataGraphicList();
-            for (DataGraphic dataGraphicListOrphanCheckDataGraphic : dataGraphicListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Data (" + data + ") cannot be destroyed since the DataGraphic " + dataGraphicListOrphanCheckDataGraphic + " in its dataGraphicList field has a non-nullable data field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
+            data.getDataEventList().clear();
+            data.getDataGraphicList().clear();
+//            List<String> illegalOrphanMessages = null;
+//            List<DataEvent> dataEventListOrphanCheck = data.getDataEventList();
+//            for (DataEvent dataEventListOrphanCheckDataEvent : dataEventListOrphanCheck) {
+//                if (illegalOrphanMessages == null) {
+//                    illegalOrphanMessages = new ArrayList<String>();
+//                }
+//                illegalOrphanMessages.add("This Data (" + data + ") cannot be destroyed since the DataEvent " + dataEventListOrphanCheckDataEvent + " in its dataEventList field has a non-nullable data field.");
+//            }
+//            List<DataGraphic> dataGraphicListOrphanCheck = data.getDataGraphicList();
+//            for (DataGraphic dataGraphicListOrphanCheckDataGraphic : dataGraphicListOrphanCheck) {
+//                if (illegalOrphanMessages == null) {
+//                    illegalOrphanMessages = new ArrayList<String>();
+//                }
+//                illegalOrphanMessages.add("This Data (" + data + ") cannot be destroyed since the DataGraphic " + dataGraphicListOrphanCheckDataGraphic + " in its dataGraphicList field has a non-nullable data field.");
+//            }
+//            if (illegalOrphanMessages != null) {
+//                throw new IllegalOrphanException(illegalOrphanMessages);
+//            }
             Device device = data.getDevice();
             if (device != null) {
                 device.setData(null);

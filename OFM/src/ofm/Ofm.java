@@ -125,32 +125,31 @@ public class Ofm extends Application {
             System.out.println(device.getLimit().toString());
             System.out.println(device.getData().toString());
             
-//            dataDao.destroy(device.getData().getDataId());
-//            device.setData(null);
+            dataDao.destroy(device.getData().getDataId());
             
-            List<Occurrence> occurrences = device.getOccurrenceList();
-            for(Occurrence occurrence : occurrences) {
-                occurrence.setDescription("Alteradas");
-                occurrenceDao.edit(occurrence);
-            }
-            
-            System.out.println("Excluindo pontos...");
-            List<DataGraphic> dataGraphics = device.getData().getDataGraphicList();
-            for(DataGraphic dataGraphic : dataGraphics) {
-                dataGraphicDao.destroy(dataGraphic.getDataGraphicId());
-            }
-            
-            System.out.println("Incluindo pontos...");
-            for(int i = 0; i < 50; i++) {
-                DataGraphic dataGraphic = new DataGraphic(device.getData(), i); //enlace bidirecional
-                dataGraphicDao.create(dataGraphic);
-                device.getData().getDataGraphicList().add(dataGraphic); //enlace bidirecional
-            }
-            
-            List<Device> devices = user.getDeviceList();
-            for(Device d : devices) {
-                System.out.println(d.toString());
-            }
+//            List<Occurrence> occurrences = device.getOccurrenceList();
+//            for(Occurrence occurrence : occurrences) {
+//                occurrence.setDescription("Alteradas");
+//                occurrenceDao.edit(occurrence);
+//            }
+//            
+//            System.out.println("Excluindo pontos...");
+//            List<DataGraphic> dataGraphics = device.getData().getDataGraphicList();
+//            for(DataGraphic dataGraphic : dataGraphics) {
+//                dataGraphicDao.destroy(dataGraphic.getDataGraphicId());
+//            }
+//            
+//            System.out.println("Incluindo pontos...");
+//            for(int i = 0; i < 50; i++) {
+//                DataGraphic dataGraphic = new DataGraphic(device.getData(), i); //enlace bidirecional
+//                dataGraphicDao.create(dataGraphic);
+//                device.getData().getDataGraphicList().add(dataGraphic); //enlace bidirecional
+//            }
+//            
+//            List<Device> devices = user.getDeviceList();
+//            for(Device d : devices) {
+//                System.out.println(d.toString());
+//            }
         }
         
         System.out.println("fim...");
